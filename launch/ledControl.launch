@@ -17,9 +17,9 @@
         <param name="baud" value="57600"/>
   </node>
 
-  <node
+  <!-- <node
     name="random_number"
     pkg="turtlebot3_rosserial"
     type="displayCal.py"
-    output="screen" />
+    output="screen" /> -->
 </launch>
