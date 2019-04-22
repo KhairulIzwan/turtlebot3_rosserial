@@ -13,7 +13,7 @@
         name="twoArduinos_RandNo"
         output="screen">
 
-        <param name="port" value="/dev/ttyUSB1"/>
+        <param name="port" value="/dev/ttyUSB2"/>
         <param name="baud" value="57600"/>
   </node>
 
