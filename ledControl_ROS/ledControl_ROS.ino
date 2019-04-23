@@ -5,16 +5,23 @@
 
 #include <ros.h>
 #include <std_msgs/String.h>
-#include <std_msgs/Int32.h>
 
 ros::NodeHandle nh;
 
-void messageCb(const std_msgs::String& msg)
+char var;
+
+void messageCb(const std_msgs::String &msg)
 {
-  if(msg.data == 1)
-    digitalWrite(13, HIGH-digitalRead(13));   //blink the led
-else
-   digitalWrite(13, LOW-digitalRead(13));   //turn off the led
+  var=msg.data;
+
+  if(var == "ON")
+  {
+    digitalWrite(13, HIGH);   // blink the led
+  }
+  else
+  {
+    digitalWrite(13, LOW);   // turn off the led
+  }
 }
 
 ros::Subscriber<std_msgs::String> sub("LED", &messageCb);

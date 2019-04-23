@@ -10,9 +10,13 @@ void messageCb(const std_msgs::Int32 &msg)
   var=msg.data;
 
   if(var > 2000)
-   digitalWrite(13, HIGH);   // blink the led
-      else
-   digitalWrite(13, LOW);   // turn off the led
+  {
+    digitalWrite(13, HIGH);   // blink the led
+  }
+  else
+  {
+    digitalWrite(13, LOW);   // turn off the led
+  }
 }
 
 ros::Subscriber<std_msgs::Int32> sub("rand_no", &messageCb);
