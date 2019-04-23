@@ -5,12 +5,13 @@
 
 #include <ros.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Int32.h>
 
 ros::NodeHandle nh;
 
 void messageCb(const std_msgs::String& msg)
 {
-  if(msg.data =="ON")
+  if(msg.data == 1)
     digitalWrite(13, HIGH-digitalRead(13));   //blink the led
 else
    digitalWrite(13, LOW-digitalRead(13));   //turn off the led
