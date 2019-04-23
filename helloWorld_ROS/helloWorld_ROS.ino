@@ -11,7 +11,8 @@ ros::NodeHandle  nh;
 std_msgs::String str_msg;
 ros::Publisher chatter("chatter", &str_msg);
 
-char hello[13] = "hello world!";
+char hello[] = "hello world! ";
+int count = 0;
 
 void setup()
 {
@@ -21,8 +22,10 @@ void setup()
 
 void loop()
 {
-  str_msg.data = hello;
+  str_msg.data = hello << count;
   chatter.publish( &str_msg );
   nh.spinOnce();
-//  delay(1000);
+  delay(1000);
+
+  ++count;
 }
