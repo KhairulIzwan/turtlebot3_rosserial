@@ -4,17 +4,13 @@
  */
 
 #include <ros.h>
-#include <std_msgs/String.h>
+#include <std_msgs/Bool.h>
 
 ros::NodeHandle nh;
 
-char var;
-
-void messageCb(const std_msgs::String &msg)
+void messageCb(const std_msgs::Bool &msg)
 {
-  var=msg.data;
-
-  if(msg.data == "ON")
+  if(msg.data == true)
   {
     digitalWrite(13, HIGH);   // blink the led
   }
@@ -24,7 +20,7 @@ void messageCb(const std_msgs::String &msg)
   }
 }
 
-ros::Subscriber<std_msgs::String> sub("LED", &messageCb);
+ros::Subscriber<std_msgs::Bool> sub("LED", &messageCb);
 
 void setup()
 {
