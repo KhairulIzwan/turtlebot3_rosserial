@@ -23,11 +23,11 @@ if __name__=='__main__':
 while not rospy.is_shutdown():
      if var<=2500:
         #send message to turn OFF the LED
-          varP="OFF"
+          varP=str("OFF")
           rospy.loginfo("The output is OFF and the var is: %s", var)
      else:
         #send message to turn ON the LED
-         varP="ON"
+         varP=str("ON")
          rospy.loginfo("The output is ON and the var is: %s", var)
 
 pub.publish(varP)

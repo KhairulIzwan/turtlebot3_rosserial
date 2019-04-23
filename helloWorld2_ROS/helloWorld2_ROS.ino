@@ -1,7 +1,5 @@
-#include "ros/ros.h"
+#include "ros.h"
 #include "std_msgs/String.h"
-
-#include <sstream>
 
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
@@ -60,9 +58,9 @@ int main(int argc, char **argv)
      */
     std_msgs::String msg;
 
-    std::stringstream ss;
-    ss << "hello world " << count;
-    msg.data = ss.str();
+    // std::stringstream ss;
+    // ss << "hello world " << count;
+    msg.data = "hello world " << count;
 
     ROS_INFO("%s", msg.data.c_str());
 
