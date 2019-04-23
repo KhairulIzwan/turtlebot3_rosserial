@@ -1,8 +1,13 @@
+/*
+ * rosserial Subscriber Example
+ * Blinks an LED on callback
+ */
+
 #include <ros.h>
 #include <std_msgs/String.h>
- 
+
 ros::NodeHandle nh;
- 
+
 void messageCb(const std_msgs::String& msg)
 {
   if(msg.data =="ON")
@@ -10,18 +15,18 @@ void messageCb(const std_msgs::String& msg)
 else
    digitalWrite(13, LOW-digitalRead(13));   //turn off the led
 }
- 
+
 ros::Subscriber<std_msgs::String> sub("LED", &messageCb);
- 
+
 void setup()
 {
   pinMode(13, OUTPUT);
   nh.initNode();
   nh.subscribe(sub);
 }
- 
+
 void loop()
 {
   nh.spinOnce();
-  delay(1000);
+  delay(1);
 }
