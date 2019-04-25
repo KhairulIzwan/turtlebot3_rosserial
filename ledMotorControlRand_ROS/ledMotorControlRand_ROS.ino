@@ -1,6 +1,7 @@
-#include "Arduino.h"
+
 #include <ros.h>
 #include <std_msgs/Int32.h>
+#include "Arduino.h"
 #include "AX12A.h"
 
 #define DirectionPin 	(10u)
@@ -41,6 +42,6 @@ void setup()
 
 void loop()
 {
-  nh.spinOnce();
+  // nh.spinOnce();
   // delay(200);
 }

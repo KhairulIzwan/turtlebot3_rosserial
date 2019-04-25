@@ -1,7 +1,9 @@
-#include "Arduino.h"
+
 #include <ros.h>
 #include <ros/time.h>
 #include <std_msgs/Int32.h>
+
+#include "Arduino.h"
 
 int min=1;
 int max=5000;
@@ -35,6 +37,6 @@ void loop()
 {
   rand_msg.data=random_number();
   pub_random.publish(&rand_msg);
-  nh.spinOnce();
+  // nh.spinOnce();
   // delay(1000);
  }
