@@ -35,7 +35,7 @@ class display_cal_node:
             if self.var <= 2500:
                 """ send message to turn OFF the LED """
                 self.varP = str("OFF")
-                rospy.loginfo("The output is OFF and the var is: %s", self.var)
+                rospy.logwarn("The output is OFF and the var is: %s", self.var)
             else:
                 """ send message to turn ON the LED """
                 self.varP = str("ON")
@@ -54,7 +54,8 @@ class display_cal_node:
             rospy.loginfo("Display cal node [OFFLINE]...")
 
         finally:
-            pass
+            self.varPVal = 0
+            self.LED_pub.publish(self.varPVal)
 
 
 def usage():
