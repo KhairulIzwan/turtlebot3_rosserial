@@ -19,7 +19,8 @@ void messageCb(const std_msgs::Int32 &msg)
   }
 }
 
-ros::Subscriber<std_msgs::Int32> sub("rand_no", &messageCb);
+ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
+// ros::Subscriber<std_msgs::Int32> sub("/LED", &messageCb);
 
 void setup()
 {

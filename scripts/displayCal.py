@@ -25,26 +25,28 @@ class display_cal_node:
         self.rate=rospy.Rate(10)
 
         """ Subscribe to the camera info topic """
-        self.imgRaw_sub = rospy.Subscriber("/random_number", Int32, self.callback)
+        self.randNo_sub = rospy.Subscriber("/random_number", Int32, self.callback)
 
         """ Publish as the opencv image topic """
-        self.imgCV_pub = rospy.Publisher("/LED", String, queue_size=10)
+        # self.LED_pub = rospy.Publisher("/LED", String, queue_size=10)
+        self.LED_pub = rospy.Publisher("/LED", Int32, queue_size=10)
 
         while not rospy.is_shutdown():
-             if self.var <= 2500:
+            if self.var <= 2500:
                 """ send message to turn OFF the LED """
-                  self.varP = str("OFF")
-                  rospy.loginfo("The output is OFF and the var is: %s", self.var)
-             else:
+                self.varP = str("OFF")
+                rospy.loginfo("The output is OFF and the var is: %s", self.var)
+            else:
                 """ send message to turn ON the LED """
-                 self.varP = str("ON")
-                 rospy.loginfo("The output is ON and the var is: %s", self.var)
+                self.varP = str("ON")
+                rospy.loginfo("The output is ON and the var is: %s", self.var)
 
-            pub.publish(self.varP)
+            self.varPVal = self.var
+            self.LED_pub.publish(self.varPVal)
             self.rate.sleep()
 
     """ define the display text """
-    def callback(msg):
+    def callback(self, msg):
         self.var=msg.data
 
     def shutdown(self):
@@ -65,8 +67,6 @@ def main(args):
         rospy.spin()
     except KeyboardInterrupt:
         print("Display cal node [OFFLINE]...")
-
-    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     if len(sys.argv) < 1:
