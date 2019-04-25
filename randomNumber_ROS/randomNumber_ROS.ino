@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include <ros.h>
 #include <ros/time.h>
 #include <std_msgs/Int32.h>
