@@ -5,7 +5,7 @@
         output="screen">
 
         <param name="port" value="/dev/ttyUSB0"/>
-        <param name="baud" value="115200"/>
+        <param name="baud" value="57600"/>
   </node>
 
   <node pkg="rosserial_python"
@@ -14,7 +14,7 @@
         output="screen">
 
         <param name="port" value="/dev/ttyUSB1"/>
-        <param name="baud" value="115200"/>
+        <param name="baud" value="57600"/>
   </node>
 
   <!-- <node
