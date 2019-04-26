@@ -37,6 +37,6 @@ void loop()
 {
   rand_msg.data=random_number();
   pub_random.publish(&rand_msg);
-  // nh.spinOnce();
-  // delay(1000);
+  nh.spinOnce();
+  delay(200);
  }

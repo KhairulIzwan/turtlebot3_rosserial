@@ -34,7 +34,7 @@ ros::Subscriber<std_msgs::Int32> sub("/LED", &messageCb);
 void setup()
 {
   pinMode(13, OUTPUT);
-  ax12a.begin(BaudRate, DirectionPin, &Serial);
+  ax12a.begin(BaudRate, DirectionPin, &Serial1);  // Using HardwareSerial (Serial1 or Serial2 or Serial3) of ARDUINO MEGA 2560
 
   nh.initNode();
   nh.subscribe(sub);
@@ -42,6 +42,6 @@ void setup()
 
 void loop()
 {
-  // nh.spinOnce();
-  // delay(200);
+  nh.spinOnce();
+  delay(200);
 }
