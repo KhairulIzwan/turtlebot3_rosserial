@@ -18,11 +18,11 @@ void messageCb(const std_msgs::Int32 &msg)
 
   if(var > 2000)
   {
-    ax12a.ledStatus(ID, ON);
+    ax12a.turn(ID, LEFT, 500);
   }
   else
   {
-    ax12a.ledStatus(ID, OFF);
+    ax12a.turn(ID, RIGHT, 500);
   }
 }
 
@@ -32,6 +32,7 @@ ros::Subscriber<std_msgs::Int32> sub("/LED", &messageCb);
 void setup()
 {
   ax12a.begin(BaudRate, DirectionPin, &Serial1);  // Using HardwareSerial (Serial1 or Serial2 or Serial3) of ARDUINO MEGA 2560
+  ax12a.setEndless(ID, ON);
 
   nh.initNode();
   nh.subscribe(sub);
