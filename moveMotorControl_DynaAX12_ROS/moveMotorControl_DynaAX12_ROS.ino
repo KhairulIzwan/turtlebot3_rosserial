@@ -31,12 +31,12 @@ void messageCb(const geometry_msgs::Twist &msg)
 
   if(varLinearX > 0)  //  FORWARD
   {
-    int speed = map(varLinearX, 0, 0.22, 0, 1000)
+    int speed = map(varLinearX, 0, 0.22, 0, 1000);
     ax12a.turn(ID, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
   }
   else if(varLinearX < 0) //  BACKWARD
   {
-    int speed = map(varLinearX, 0, -0.22, 0, 1000)
+    int speed = map(varLinearX, 0, -0.22, 0, 1000);
     ax12a.turn(ID, RIGHT, speed);
   }
   else
