@@ -64,6 +64,6 @@ void setup()
 void loop()
 {
   nh.spinOnce();
-  // delay(200);
-  nh.loginfo(speed);
+  delay(200);
+  // nh.loginfo(speed);
 }
