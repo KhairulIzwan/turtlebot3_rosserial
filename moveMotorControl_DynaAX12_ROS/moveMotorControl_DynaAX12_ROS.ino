@@ -28,13 +28,16 @@ void messageCb(const geometry_msgs::Twist &msg)
   varAngularY = msg.angular.y;
   varAngularZ = msg.angular.z;
 
+
   if(varLinearX > 0)  //  FORWARD
   {
-    ax12a.turn(ID, LEFT, 500);  // MAX SPEED: TRY and ERROR ~ 1000
+    int speed = map(varLinearX, 0, 0.22, 0, 1000)
+    ax12a.turn(ID, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
   }
   else if(varLinearX < 0) //  BACKWARD
   {
-    ax12a.turn(ID, RIGHT, 500);
+    int speed = map(varLinearX, 0, -0.22, 0, 1000)
+    ax12a.turn(ID, RIGHT, speed);
   }
   else
   {
