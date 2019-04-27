@@ -4,7 +4,10 @@
         name="hello_world_node"
         output="screen">
 
-        <param name="port" value="/dev/ttyUSB0"/>
+        <!-- ARDUINO NANO -->
+        <!-- <param name="port" value="/dev/ttyUSB0"/> -->
+        <!-- ARDUINO MEGA 2560 -->
+        <param name="port" value="/dev/ttyACM0"/>
         <param name="baud" value="57600"/>
   </node>
 
