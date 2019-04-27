@@ -19,6 +19,8 @@ float varAngularX;
 float varAngularY;
 float varAngularZ;
 
+int speed;
+
 void messageCb(const geometry_msgs::Twist &msg)
 {
   varLinearX = msg.linear.x;
@@ -31,12 +33,14 @@ void messageCb(const geometry_msgs::Twist &msg)
 
   if(varLinearX > 0)  //  FORWARD
   {
-    int speed = map(varLinearX, 0, 0.22, 0, 1000);
+    // int speed = map(varLinearX, 0.01, 0.22, 100, 1000);
+    speed = (varLinearX - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
     ax12a.turn(ID, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
   }
   else if(varLinearX < 0) //  BACKWARD
   {
-    int speed = map(varLinearX, 0, -0.22, 0, 1000);
+    // int speed = map(varLinearX, -0.01, -0.22, 100, 1000);
+    speed = (varLinearX - (-0.01)) * (1000 - 100) / ((-0.22) - (-0.01)) + 100;
     ax12a.turn(ID, RIGHT, speed);
   }
   else
@@ -61,4 +65,5 @@ void loop()
 {
   nh.spinOnce();
   // delay(200);
+  nh.loginfo(speed);
 }
