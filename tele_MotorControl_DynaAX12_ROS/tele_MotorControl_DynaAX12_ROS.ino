@@ -22,6 +22,9 @@ double velDiff;
 double leftPower;
 double rightPower;
 
+double motorPower;
+double motorSpeed;
+
 void messageCb(const geometry_msgs::Twist &msg)
 {
   transVelocity = msg.linear.x;
@@ -30,22 +33,47 @@ void messageCb(const geometry_msgs::Twist &msg)
   leftPower = (transVelocity + velDiff) / wheelRadius;
   rightPower = (transVelocity - velDiff) / wheelRadius;
 
-  leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+  // leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+  //
+  // if (leftPower > 0)
+  // {
+  //   leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+  // }
 
-  if (leftPower > 0)
-  {
-    leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
-  }
+  double leftSpeed = motorSPD(leftPower);
+  double rightSpeed = motorSPD(rightPower);
 
   // ax12a.turn(ID1, RIGHT, speed);
   // ax12a.turn(ID2, LEFT, speed);
   char result[8];
   char result1[8];
-  dtostrf(abs(leftPower), 4, 4, result);
-  dtostrf(abs(rightPower), 4, 4, result1);
+  // dtostrf(abs(leftPower), 4, 4, result);
+  // dtostrf(abs(rightPower), 4, 4, result1);
+  dtostrf(abs(leftSpeed), 4, 4, result);
+  dtostrf(abs(rightSpeed), 4, 4, result1);
 //  sprintf(log_msg,"leftPower =%s", result);
   nh.loginfo(result);
   nh.loginfo(result1);
+}
+
+double motorSPD(double motorPower)
+{
+  if (abs(motorPower) > 0)
+  {
+    // Determine the motor speed
+    motorSpeed = (motorPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+
+    // Determine the direction
+    if (motorPower > 0)
+    {
+      motorSpeed = motorSpeed;
+    }
+    else
+    {
+      motorSpeed = -motorSpeed;
+    }
+    return motorSpeed;
+  }
 }
 
 // ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
