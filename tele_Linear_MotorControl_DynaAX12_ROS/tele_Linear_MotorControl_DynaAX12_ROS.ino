@@ -51,26 +51,6 @@ void messageCb(const geometry_msgs::Twist &msg)
     ax12a.turn(ID1, LEFT, 0);  //  or ax12a.turn(ID, RIGHT, 0);
     ax12a.turn(ID2, LEFT, 0);
   }
-
-  if(varAngularZ > 0)  //  FORWARD
-  {
-    // int speed = map(varAngularZ, 0.01, 0.22, 100, 1000);
-    speed = (varAngularZ - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
-    ax12a.turn(ID1, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
-    ax12a.turn(ID2, RIGHT, speed);
-  }
-  else if(varAngularZ < 0) //  BACKWARD
-  {
-    // int speed = map(varAngularZ, -0.01, -0.22, 100, 1000);
-    speed = (varAngularZ - (-0.01)) * (1000 - 100) / ((-0.22) - (-0.01)) + 100;
-    ax12a.turn(ID1, RIGHT, speed);
-    ax12a.turn(ID2, LEFT, speed);
-  }
-  else
-  {
-    ax12a.turn(ID1, LEFT, 0);  //  or ax12a.turn(ID, RIGHT, 0);
-    ax12a.turn(ID2, LEFT, 0);
-  }
 }
 
 // ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
@@ -90,5 +70,4 @@ void loop()
 {
   nh.spinOnce();
   delay(200);
-  // nh.loginfo(speed);
 }

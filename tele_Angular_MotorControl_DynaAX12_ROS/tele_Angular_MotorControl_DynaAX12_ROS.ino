@@ -7,7 +7,8 @@
 
 #define DirectionPin 	(10u)
 #define BaudRate  		(1000000ul)
-#define ID				(13u)
+#define ID1				(15u)
+#define ID2				(6u)
 
 ros::NodeHandle nh;
 
@@ -30,22 +31,24 @@ void messageCb(const geometry_msgs::Twist &msg)
   varAngularY = msg.angular.y;
   varAngularZ = msg.angular.z;
 
-
-  if(varLinearX > 0)  //  FORWARD
+  if(varAngularZ > 0)  //  FORWARD
   {
-    // int speed = map(varLinearX, 0.01, 0.22, 100, 1000);
-    speed = (varLinearX - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
-    ax12a.turn(ID, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
+    // int speed = map(varAngularZ, 0.01, 2.84, 100, 1000);
+    speed = (varAngularZ - 0.01) * (1000 - 100) / (2.84 - 0.01) + 100;
+    ax12a.turn(ID1, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
+    ax12a.turn(ID2, LEFT, speed);
   }
-  else if(varLinearX < 0) //  BACKWARD
+  else if(varAngularZ < 0) //  BACKWARD
   {
-    // int speed = map(varLinearX, -0.01, -0.22, 100, 1000);
-    speed = (varLinearX - (-0.01)) * (1000 - 100) / ((-0.22) - (-0.01)) + 100;
-    ax12a.turn(ID, RIGHT, speed);
+    // int speed = map(varAngularZ, -0.01, -2.84, 100, 1000);
+    speed = (varAngularZ - (-0.01)) * (1000 - 100) / ((-2.84) - (-0.01)) + 100;
+    ax12a.turn(ID1, RIGHT, speed);
+    ax12a.turn(ID2, RIGHT, speed);
   }
   else
   {
-    ax12a.turn(ID, LEFT, 0);  //  or ax12a.turn(ID, RIGHT, 0);
+    ax12a.turn(ID1, LEFT, 0);  //  or ax12a.turn(ID, RIGHT, 0);
+    ax12a.turn(ID2, LEFT, 0);
   }
 }
 
@@ -55,7 +58,8 @@ ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb);
 void setup()
 {
   ax12a.begin(BaudRate, DirectionPin, &Serial1);  // Using HardwareSerial (Serial1 or Serial2 or Serial3) of ARDUINO MEGA 2560
-  ax12a.setEndless(ID, ON);
+  ax12a.setEndless(ID1, ON);
+  ax12a.setEndless(ID2, ON);
 
   nh.initNode();
   nh.subscribe(sub);

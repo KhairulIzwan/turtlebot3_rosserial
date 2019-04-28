@@ -1,7 +1,7 @@
 <launch>
   <node pkg="rosserial_python"
         type="serial_node.py"
-        name="hello_world_node"
+        name="single_node"
         output="screen">
 
         <!-- ARDUINO NANO -->

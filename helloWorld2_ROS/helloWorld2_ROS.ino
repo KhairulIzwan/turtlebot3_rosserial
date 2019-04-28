@@ -24,7 +24,7 @@ void loop()
   int_msg.data = count;
   chatter.publish( &int_msg );
   nh.spinOnce();
-  delay(1000);
+  delay(200);
 
   ++count;
 }
