@@ -15,23 +15,37 @@ ros::NodeHandle nh;
 float transVelocity;
 float rotVelocity;
 
-float transVelocity;
-float rotVelocity;
 float wheelSep = 0.165; //  16.5cm
 float wheelRadius = 0.07; //  70mm
 
+double velDiff;
+double leftPower;
+double rightPower;
 
 void messageCb(const geometry_msgs::Twist &msg)
 {
   transVelocity = msg.linear.x;
   rotVelocity = msg.angular.z;
-  double velDiff = (wheelSep * rotVelocity) / 2.0;
-  double leftPower = (transVelocity + velDiff) / wheelRadius;
-  double rightPower = (transVelocity - velDiff) / wheelRadius;
+  velDiff = (wheelSep * rotVelocity) / 2.0;
+  leftPower = (transVelocity + velDiff) / wheelRadius;
+  rightPower = (transVelocity - velDiff) / wheelRadius;
+
+  leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+
+  if (leftPower > 0)
+  {
+    leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+  }
 
   // ax12a.turn(ID1, RIGHT, speed);
   // ax12a.turn(ID2, LEFT, speed);
-  nh.loginfo([leftPower, rightPower])
+  char result[8];
+  char result1[8];
+  dtostrf(abs(leftPower), 4, 4, result);
+  dtostrf(abs(rightPower), 4, 4, result1);
+//  sprintf(log_msg,"leftPower =%s", result);
+  nh.loginfo(result);
+  nh.loginfo(result1);
 }
 
 // ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
