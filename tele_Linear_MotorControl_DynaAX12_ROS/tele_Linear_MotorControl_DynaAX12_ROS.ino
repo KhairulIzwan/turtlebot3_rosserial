@@ -36,15 +36,15 @@ void messageCb(const geometry_msgs::Twist &msg)
   {
     // int speed = map(varLinearX, 0.01, 0.22, 100, 1000);
     speed = (varLinearX - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
-    ax12a.turn(ID1, LEFT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
-    ax12a.turn(ID2, RIGHT, speed);
+    ax12a.turn(ID1, RIGHT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
+    ax12a.turn(ID2, LEFT, speed);
   }
   else if(varLinearX < 0) //  BACKWARD
   {
     // int speed = map(varLinearX, -0.01, -0.22, 100, 1000);
     speed = (varLinearX - (-0.01)) * (1000 - 100) / ((-0.22) - (-0.01)) + 100;
-    ax12a.turn(ID1, RIGHT, speed);
-    ax12a.turn(ID2, LEFT, speed);
+    ax12a.turn(ID1, LEFT, speed);
+    ax12a.turn(ID2, RIGHT, speed);
   }
   else
   {
