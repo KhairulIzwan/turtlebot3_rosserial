@@ -59,11 +59,37 @@ void motorDirection()
   {
     // set the speed
     // speed = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-    speed = (abs(leftPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
+    speed1 = (abs(leftPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
+    speed2 = (abs(rightPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
+
+    // Has possiblity to move FORWARD or BACKWARD only in same speed
+    if (abs(leftPower) == abs(rightPower))
+    {
+      // FORWARD
+      if ((leftPower > 0) && (rightPower > 0))
+      {
+        moveForward(speed1, speed2);
+      }
+      // BACKWARD
+      else
+      {
+        moveBackward(speed1, speed2)
+      }
+    // }
+    // // Turn Left
+    // else if (abs(leftPower) > abs(rightPower))
+    // {
+    //
+    // }
+    // // Turn Right`
+    // else if (abs(leftPower) < abs(rightPower))
+    // {
+    //
+    // }
   }
   else
   {
-    speed = 0;
+    // STOP
     moveStop();
   }
 }
