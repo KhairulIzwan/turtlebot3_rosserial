@@ -73,16 +73,13 @@ void motorDirection()
       // FORWARD
       if ((leftPower > 0) && (rightPower > 0))
       {
-        dir1 = "RIGHT";
-        dir2 = "LEFT";
+        moveForward(speed1, speed2);
       }
       // BACKWARD
-      else
+      else if ((leftPower < 0) && (rightPower < 0))
       {
-        dir1 = "LEFT";
-        dir2 = "RIGHT";
+        moveBackward(speed1, speed2);
       }
-    moveFree(dir1, speed1, dir2, speed2);
     }
     // // Has possiblity to move LEFT or RIGHT with different speed
     // else if (abs(leftPower) != abs(rightPower))
