@@ -31,8 +31,8 @@ double speed2;
 // double motorPower;
 // double motorSpeed;
 
-// char latt[9];
-// char lon[9];
+char latt[9];
+char lon[9];
 
 void messageCb(const geometry_msgs::Twist &msg)
 {
@@ -58,7 +58,8 @@ void motorDirection()
   if((abs(leftPower) > 0) && (abs(rightPower) > 0))
   {
     // set the speed
-    speed = (abs(varLinearX) - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+    // speed = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    speed = (abs(leftPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
   }
   else
   {
@@ -104,7 +105,7 @@ void setup()
 
   nh.initNode();
   nh.subscribe(sub);
-  nh.advertise(pub);
+  // nh.advertise(pub);
 }
 
 void loop()
@@ -112,7 +113,8 @@ void loop()
   dtostrf(speed, 8, 4, lon);
   // dtostrf(leftPower, 8, 4, lon);
   // dtostrf(rightPower, 8, 4, latt);
-  // nh.loginfo([leftPower, rightPower]);
+  nh.loginfo(lon);
+  // nh.loginfo(latt);
   // str_msg.data = [leftPower, rightPower]
   // pub.publish(&str_msg);
   nh.spinOnce();
