@@ -71,7 +71,7 @@ void motorDirection()
     if (abs(leftPower) == abs(rightPower))
     {
       // FORWARD
-      if (((leftPower > 0) && (rightPower > 0))
+      if ((leftPower > 0) && (rightPower > 0))
       {
         moveForward(speed1, speed2);
       }
@@ -80,23 +80,23 @@ void motorDirection()
       {
         moveBackward(speed1, speed2);
       }
-      // LEFT
+      // RIGHT (CIRCLE)
       else if ((leftPower > 0) && (rightPower < 0))
       {
-        moveLeft(speed1, speed2);
+        moveRight(speed1, speed2);
       }
-      // LEFT
+      // LEFT (CIRCLE)
       else if ((leftPower < 0) && (rightPower > 0))
       {
-        moveRight(speed1, speed2);
+        moveLeft(speed1, speed2);
       }
     }
     // // Has possiblity to move LEFT or RIGHT with different speed
     // else if (abs(leftPower) != abs(rightPower))
     // {
-    //   if ((leftPower > 0) && (rightPower < 0))
+    //   if (leftPower > rightPower)
     //   {
-    //     moveLeft(speed1, speed2);
+    //     moveForward(speed1, speed2);
     //   }
     //   else
     //   {
