@@ -28,8 +28,8 @@ double speed;
 double speed1;
 double speed2;
 
-char dir1[];
-char dir2[];
+// char dir1[];
+// char dir2[];
 
 // double motorPower;
 // double motorSpeed;
@@ -71,7 +71,7 @@ void motorDirection()
     if (abs(leftPower) == abs(rightPower))
     {
       // FORWARD
-      if ((leftPower > 0) && (rightPower > 0))
+      if (((leftPower > 0) && (rightPower > 0))
       {
         moveForward(speed1, speed2);
       }
@@ -79,6 +79,16 @@ void motorDirection()
       else if ((leftPower < 0) && (rightPower < 0))
       {
         moveBackward(speed1, speed2);
+      }
+      // LEFT
+      else if ((leftPower > 0) && (rightPower < 0))
+      {
+        moveLeft(speed1, speed2);
+      }
+      // LEFT
+      else if ((leftPower < 0) && (rightPower > 0))
+      {
+        moveRight(speed1, speed2);
       }
     }
     // // Has possiblity to move LEFT or RIGHT with different speed
@@ -130,11 +140,11 @@ void moveRight(int speed1, int speed2)
   ax12a.turn(ID2, RIGHT, speed2);
 }
 
-void moveFree(char dir1[], int speed1, char dir2[], int speed2)
-{
-  ax12a.turn(ID1, dir1, speed1);
-  ax12a.turn(ID2, dir2, speed2);
-}
+// void moveFree(char dir1[], int speed1, char dir2[], int speed2)
+// {
+//   ax12a.turn(ID1, dir1, speed1);
+//   ax12a.turn(ID2, dir2, speed2);
+// }
 
 void moveStop()
 {
