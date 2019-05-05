@@ -80,16 +80,16 @@ void motorDirection()
       {
         moveBackward(speed1, speed2);
       }
-      // RIGHT (CIRCLE)
-      else if ((leftPower > 0) && (rightPower < 0))
-      {
-        moveRight(speed1, speed2);
-      }
-      // LEFT (CIRCLE)
-      else if ((leftPower < 0) && (rightPower > 0))
-      {
-        moveLeft(speed1, speed2);
-      }
+      // // RIGHT (CIRCLE)
+      // else if ((leftPower > 0) && (rightPower < 0))
+      // {
+      //   moveRight(speed1, speed2);
+      // }
+      // // LEFT (CIRCLE)
+      // else if ((leftPower < 0) && (rightPower > 0))
+      // {
+      //   moveLeft(speed1, speed2);
+      // }
     }
     // // Has possiblity to move LEFT or RIGHT with different speed
     // else if (abs(leftPower) != abs(rightPower))
@@ -177,10 +177,10 @@ void setup()
 void loop()
 {
   // dtostrf(speed, 8, 4, lon);
-  // dtostrf(leftPower, 8, 4, lon);
-  // dtostrf(rightPower, 8, 4, latt);
-  // nh.loginfo(lon);
-  // nh.loginfo(latt);
+  dtostrf(leftPower, 8, 4, lon);
+  dtostrf(rightPower, 8, 4, latt);
+  nh.loginfo(lon);
+  nh.loginfo(latt);
   // str_msg.data = [leftPower, rightPower]
   // pub.publish(&str_msg);
   nh.spinOnce();
