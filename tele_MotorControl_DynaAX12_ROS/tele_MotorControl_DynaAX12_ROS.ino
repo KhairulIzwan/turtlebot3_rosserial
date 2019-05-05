@@ -68,18 +68,28 @@ void motorDirection()
     speed1 = (abs(rightPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
 
     // Has possiblity to move
-    if (abs(leftPower) == abs(rightPower))
+    // if (abs(leftPower) == abs(rightPower))
+    // {
+    // FORWARD
+    if ((leftPower > 0) && (rightPower > 0))
     {
-      // FORWARD
-      if ((leftPower > 0) && (rightPower > 0))
-      {
-        moveForward(speed1, speed2);
-      }
-      // BACKWARD
-      else if ((leftPower < 0) && (rightPower < 0))
-      {
-        moveBackward(speed1, speed2);
-      }
+      moveForward(speed1, speed2);
+    }
+    // FORWARD
+    else if ((leftPower > 0) && (rightPower < 0))
+    {
+      moveRight(speed1, speed2);
+    }
+    // BACKWARD
+    else if ((leftPower < 0) && (rightPower < 0))
+    {
+      moveBackward(speed1, speed2);
+    }
+    // BACKWARD
+    else if ((leftPower < 0) && (rightPower > 0))
+    {
+      moveLeft(speed1, speed2);
+    }
       // // RIGHT (CIRCLE)
       // else if ((leftPower > 0) && (rightPower < 0))
       // {
@@ -90,7 +100,7 @@ void motorDirection()
       // {
       //   moveLeft(speed1, speed2);
       // }
-    }
+    // }
     // // Has possiblity to move LEFT or RIGHT with different speed
     // else if (abs(leftPower) != abs(rightPower))
     // {
@@ -128,13 +138,13 @@ void moveBackward(int speed1, int speed2)
   ax12a.turn(ID2, RIGHT, speed2);
 }
 
-void moveLeft(int speed1, int speed2)
+void moveRight(int speed1, int speed2)
 {
   ax12a.turn(ID1, LEFT, speed1);
   ax12a.turn(ID2, LEFT, speed2);
 }
 
-void moveRight(int speed1, int speed2)
+void moveLeft(int speed1, int speed2)
 {
   ax12a.turn(ID1, RIGHT, speed1);
   ax12a.turn(ID2, RIGHT, speed2);
