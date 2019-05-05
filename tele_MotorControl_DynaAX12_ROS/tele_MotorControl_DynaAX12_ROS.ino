@@ -64,8 +64,8 @@ void motorDirection()
   {
     // set the speed
     // speed = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-    speed2 = (abs(leftPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
-    speed1 = (abs(rightPower) - 0.00) * (1000 - 0) / (6.49 - 0.00) + 0;
+    speed2 = (abs(leftPower) - 0.00) * (1000 - 200) / (6.49 - 0.00) + 200;
+    speed1 = (abs(rightPower) - 0.00) * (1000 - 200) / (6.49 - 0.00) + 200;
 
     // Has possiblity to move
     // if (abs(leftPower) == abs(rightPower))
@@ -78,7 +78,7 @@ void motorDirection()
     // FORWARD
     else if ((leftPower > 0) && (rightPower < 0))
     {
-      moveRight(speed1, speed2);
+      moveLeft(speed1, speed2);
     }
     // BACKWARD
     else if ((leftPower < 0) && (rightPower < 0))
@@ -88,7 +88,7 @@ void motorDirection()
     // BACKWARD
     else if ((leftPower < 0) && (rightPower > 0))
     {
-      moveLeft(speed1, speed2);
+      moveRight(speed1, speed2);
     }
       // // RIGHT (CIRCLE)
       // else if ((leftPower > 0) && (rightPower < 0))
@@ -187,12 +187,12 @@ void setup()
 void loop()
 {
   // dtostrf(speed, 8, 4, lon);
-  dtostrf(leftPower, 8, 4, lon);
-  dtostrf(rightPower, 8, 4, latt);
-  nh.loginfo(lon);
-  nh.loginfo(latt);
+  // dtostrf(leftPower, 8, 4, lon);
+  // dtostrf(rightPower, 8, 4, latt);
+  // nh.loginfo(lon);
+  // nh.loginfo(latt);
   // str_msg.data = [leftPower, rightPower]
   // pub.publish(&str_msg);
   nh.spinOnce();
-  // delay(200);
+  delay(1);
 }
