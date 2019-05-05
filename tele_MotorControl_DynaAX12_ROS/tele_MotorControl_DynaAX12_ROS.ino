@@ -1,6 +1,7 @@
 //different specific libraries
 #include <ros.h>
-// #include <std_msgs/String.h>
+#include <ros/time.h>
+#include <std_msgs/Int32.h>
 #include <geometry_msgs/Twist.h>
 #include "Arduino.h"
 #include "AX12A.h"
@@ -39,15 +40,9 @@ double speed2;
 char latt[9];
 char lon[9];
 
+
 void messageCb(const geometry_msgs::Twist &msg)
 {
-  // varLinearX = msg.linear.x;
-  // varLinearY = msg.linear.y;
-  // varLinearZ = msg.linear.z;
-  // varAngularX = msg.angular.x;
-  // varAngularY = msg.angular.y;
-  // varAngularZ = msg.angular.z;
-
   transVelocity = msg.linear.x;
   rotVelocity = msg.angular.z;
 
@@ -74,6 +69,8 @@ void motorDirection()
     if ((leftPower > 0) && (rightPower > 0))
     {
       moveForward(speed1, speed2);
+      rand_msg.data = 1;
+      pub.publish(&rand_msg);
     }
     // FORWARD
     else if ((leftPower > 0) && (rightPower < 0))
@@ -90,34 +87,6 @@ void motorDirection()
     {
       moveRight(speed1, speed2);
     }
-      // // RIGHT (CIRCLE)
-      // else if ((leftPower > 0) && (rightPower < 0))
-      // {
-      //   moveRight(speed1, speed2);
-      // }
-      // // LEFT (CIRCLE)
-      // else if ((leftPower < 0) && (rightPower > 0))
-      // {
-      //   moveLeft(speed1, speed2);
-      // }
-    // }
-    // // Has possiblity to move LEFT or RIGHT with different speed
-    // else if (abs(leftPower) != abs(rightPower))
-    // {
-    //   if (leftPower > rightPower)
-    //   {
-    //     moveForward(speed1, speed2);
-    //   }
-    //   else
-    //   {
-    //     moveRight(speed1, speed2);
-    //   }
-    // }
-    // // Has possiblity to move LEFT or RIGHT with different speed
-    // else if (abs(leftPower) < abs(rightPower))
-    // {
-    //
-    // }
   }
   else
   {
@@ -150,12 +119,6 @@ void moveLeft(int speed1, int speed2)
   ax12a.turn(ID2, RIGHT, speed2);
 }
 
-// void moveFree(char dir1[], int speed1, char dir2[], int speed2)
-// {
-//   ax12a.turn(ID1, dir1, speed1);
-//   ax12a.turn(ID2, dir2, speed2);
-// }
-
 void moveStop()
 {
   ax12a.turn(ID1, LEFT, 0);
@@ -166,12 +129,10 @@ void moveStop()
   // ax12a.turn(ID2, RIGHT, 0);
 }
 
-
-// ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
 ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb);
 
-// std_msgs::String str_msg;
-// ros::Publisher pub("chatter", &str_msg);
+std_msgs::Int32 rand_msg;
+ros::Publisher pub("/number", &rand_msg);
 
 void setup()
 {
@@ -181,18 +142,11 @@ void setup()
 
   nh.initNode();
   nh.subscribe(sub);
-  // nh.advertise(pub);
+  nh.advertise(pub_random);
 }
 
 void loop()
 {
-  // dtostrf(speed, 8, 4, lon);
-  // dtostrf(leftPower, 8, 4, lon);
-  // dtostrf(rightPower, 8, 4, latt);
-  // nh.loginfo(lon);
-  // nh.loginfo(latt);
-  // str_msg.data = [leftPower, rightPower]
-  // pub.publish(&str_msg);
   nh.spinOnce();
   delay(1);
 }
