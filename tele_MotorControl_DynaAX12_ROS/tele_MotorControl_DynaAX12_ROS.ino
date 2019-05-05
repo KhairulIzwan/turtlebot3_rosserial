@@ -1,96 +1,112 @@
+  //different specific libraries
+  #include <ros.h>
+  // #include <std_msgs/String.h>
+  #include <geometry_msgs/Twist.h>
+  #include "Arduino.h"
+  #include "AX12A.h"
 
-#include <ros.h>
-#include <std_msgs/Int32.h>
-#include <geometry_msgs/Twist.h>
-#include "Arduino.h"
-#include "AX12A.h"
+  #define DirectionPin 	(10u)
+  #define BaudRate  		(1000000ul)
+  #define ID1				(15u)
+  #define ID2				(6u)
 
-#define DirectionPin 	(10u)
-#define BaudRate  		(1000000ul)
-#define ID1				(15u)
-#define ID2				(6u)
+  // create the ros node nh. The node will be used to publish to Arduino
+  ros::NodeHandle nh;
 
-ros::NodeHandle nh;
+  float transVelocity;
+  float rotVelocity;
 
-float transVelocity;
-float rotVelocity;
+  float wheelSep = 0.165; //  16.5cm
+  float wheelRadius = 0.07; //  70mm
 
-float wheelSep = 0.165; //  16.5cm
-float wheelRadius = 0.07; //  70mm
+  double velDiff;
+  double leftPower;
+  double rightPower;
 
-double velDiff;
-double leftPower;
-double rightPower;
+  double motorPower;
+  double motorSpeed;
 
-double motorPower;
-double motorSpeed;
+  char latt[9];
+  char lon[9];
 
-void messageCb(const geometry_msgs::Twist &msg)
-{
-  transVelocity = msg.linear.x;
-  rotVelocity = msg.angular.z;
-  velDiff = (wheelSep * rotVelocity) / 2.0;
-  leftPower = (transVelocity + velDiff) / wheelRadius;
-  rightPower = (transVelocity - velDiff) / wheelRadius;
-
-  // leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
-  //
-  // if (leftPower > 0)
-  // {
-  //   leftPowerSPD = (leftPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
-  // }
-
-  double leftSpeed = motorSPD(leftPower);
-  double rightSpeed = motorSPD(rightPower);
-
-  // ax12a.turn(ID1, RIGHT, speed);
-  // ax12a.turn(ID2, LEFT, speed);
-  char result[8];
-  char result1[8];
-  // dtostrf(abs(leftPower), 4, 4, result);
-  // dtostrf(abs(rightPower), 4, 4, result1);
-  dtostrf(abs(leftSpeed), 4, 4, result);
-  dtostrf(abs(rightSpeed), 4, 4, result1);
-//  sprintf(log_msg,"leftPower =%s", result);
-  nh.loginfo(result);
-  nh.loginfo(result1);
-}
-
-double motorSPD(double motorPower)
-{
-  if (abs(motorPower) > 0)
+  void messageCb(const geometry_msgs::Twist &msg)
   {
-    // Determine the motor speed
-    motorSpeed = (motorPower - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
+    // varLinearX = msg.linear.x;
+    // varLinearY = msg.linear.y;
+    // varLinearZ = msg.linear.z;
+    // varAngularX = msg.angular.x;
+    // varAngularY = msg.angular.y;
+    // varAngularZ = msg.angular.z;
 
-    // Determine the direction
-    if (motorPower > 0)
+    transVelocity = msg.linear.x;
+    rotVelocity = msg.angular.z;
+    velDiff = (wheelSep * rotVelocity) / 2.0;
+    leftPower = (transVelocity + velDiff) / wheelRadius;
+    rightPower = (transVelocity - velDiff) / wheelRadius;
+
+    motorDirection();
+  }
+
+  void motorDirection()
+  {
+    if(abs(varLinearX) > 0)
     {
-      motorSpeed = motorSpeed;
+      // set the speed
+      speed = (abs(varLinearX) - 0.01) * (1000 - 100) / (0.22 - 0.01) + 100;
     }
     else
     {
-      motorSpeed = -motorSpeed;
+      moveStop();
     }
-    return motorSpeed;
   }
-}
 
-// ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
-ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb);
+  void moveForward(int speed1, int speed2)
+  {
+    ax12a.turn(ID1, RIGHT, speed1);  // MAX SPEED: TRY and ERROR ~ 1000
+    ax12a.turn(ID2, LEFT, speed2);
+  }
 
-void setup()
-{
-  ax12a.begin(BaudRate, DirectionPin, &Serial1);  // Using HardwareSerial (Serial1 or Serial2 or Serial3) of ARDUINO MEGA 2560
-  ax12a.setEndless(ID1, ON);
-  ax12a.setEndless(ID2, ON);
+  void moveBackward(int speed1, int speed2)
+  {
+    ax12a.turn(ID1, LEFT, speed1);
+    ax12a.turn(ID2, RIGHT, speed2);
+  }
 
-  nh.initNode();
-  nh.subscribe(sub);
-}
+  void moveStop()
+  {
+    ax12a.turn(ID1, LEFT, 0);
+    ax12a.turn(ID2, LEFT, 0);
 
-void loop()
-{
-  nh.spinOnce();
-  delay(200);
-}
+    //  or
+    // ax12a.turn(ID1, RIGHT, 0);
+    // ax12a.turn(ID2, RIGHT, 0);
+  }
+
+
+  // ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
+  ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb);
+
+  // std_msgs::String str_msg;
+  // ros::Publisher pub("chatter", &str_msg);
+
+  void setup()
+  {
+    ax12a.begin(BaudRate, DirectionPin, &Serial1);  // Using HardwareSerial (Serial1 or Serial2 or Serial3) of ARDUINO MEGA 2560
+    ax12a.setEndless(ID1, ON);
+    ax12a.setEndless(ID2, ON);
+
+    nh.initNode();
+    nh.subscribe(sub);
+    nh.advertise(pub);
+  }
+
+  void loop()
+  {
+    dtostrf(leftPower, 8, 4, lon);
+    dtostrf(rightPower, 8, 4, latt);
+    nh.loginfo([leftPower, rightPower]);
+    // str_msg.data = [leftPower, rightPower]
+    // pub.publish(&str_msg);
+    nh.spinOnce();
+    // delay(200);
+  }

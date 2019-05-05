@@ -22,6 +22,16 @@ float varAngularZ;
 
 int speed;
 
+float transVelocity;
+float rotVelocity;
+
+float wheelSep = 0.165; //  16.5cm
+float wheelRadius = 0.07; //  70mm
+
+double velDiff;
+double leftPower;
+double rightPower;
+
 void messageCb(const geometry_msgs::Twist &msg)
 {
   varLinearX = msg.linear.x;
@@ -31,7 +41,11 @@ void messageCb(const geometry_msgs::Twist &msg)
   varAngularY = msg.angular.y;
   varAngularZ = msg.angular.z;
 
+  motorDirection();
+}
 
+void motorDirection()
+{
   if(abs(varLinearX) > 0)
   {
     // set the speed
@@ -39,11 +53,11 @@ void messageCb(const geometry_msgs::Twist &msg)
 
     if(varLinearX > 0)
     {
-      moveForward(speed);
+      moveForward(speed, speed);
     }
     else
     {
-      moveBackward(speed);
+      moveBackward(speed, speed);
     }
   }
   else
@@ -52,16 +66,16 @@ void messageCb(const geometry_msgs::Twist &msg)
   }
 }
 
-void moveForward(int speed)
+void moveForward(int speed1, int speed2)
 {
-  ax12a.turn(ID1, RIGHT, speed);  // MAX SPEED: TRY and ERROR ~ 1000
-  ax12a.turn(ID2, LEFT, speed);
+  ax12a.turn(ID1, RIGHT, speed1);  // MAX SPEED: TRY and ERROR ~ 1000
+  ax12a.turn(ID2, LEFT, speed2);
 }
 
-void moveBackward(int speed)
+void moveBackward(int speed1, int speed2)
 {
-  ax12a.turn(ID1, LEFT, speed);
-  ax12a.turn(ID2, RIGHT, speed);
+  ax12a.turn(ID1, LEFT, speed1);
+  ax12a.turn(ID2, RIGHT, speed2);
 }
 
 void moveStop()
@@ -74,7 +88,6 @@ void moveStop()
   // ax12a.turn(ID2, RIGHT, 0);
 }
 
-// ros::Subscriber<std_msgs::Int32> sub("/random_number", &messageCb);
 ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb);
 
 void setup()
@@ -90,5 +103,8 @@ void setup()
 void loop()
 {
   nh.spinOnce();
-  delay(200);
+  // comment to eliminate slow communication between node
+  //  its good for publishing topic use delay -- perhaps :)
+  // delay(200);
+
 }
