@@ -73,7 +73,7 @@ void motorDirection()
       // BACKWARD
       else
       {
-        moveBackward(speed1, speed2)
+        moveBackward(speed1, speed2);
       }
     // }
     // // Turn Left
@@ -86,6 +86,7 @@ void motorDirection()
     // {
     //
     // }
+    }
   }
   else
   {
