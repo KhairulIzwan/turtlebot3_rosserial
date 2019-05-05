@@ -136,10 +136,10 @@ void setup()
 
 void loop()
 {
-  dtostrf(speed, 8, 4, lon);
+  // dtostrf(speed, 8, 4, lon);
   // dtostrf(leftPower, 8, 4, lon);
   // dtostrf(rightPower, 8, 4, latt);
-  nh.loginfo(lon);
+  // nh.loginfo(lon);
   // nh.loginfo(latt);
   // str_msg.data = [leftPower, rightPower]
   // pub.publish(&str_msg);
