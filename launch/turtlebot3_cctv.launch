@@ -1,0 +1,25 @@
+<launch>
+  <!-- Dayana Section -->
+  <node pkg="rosserial_python"
+        type="serial_node.py"
+        name="ax-12_motor_node"
+        output="screen">
+
+        <!-- ARDUINO -->
+        <param name="port" value="/dev/ttyACM0"/>
+        <param name="baud" value="57600"/>
+  </node>
+
+  <!-- Farah Section -->
+  <node pkg="rosserial_python"
+        type="serial_node.py"
+        name="alarm_node"
+        output="screen">
+
+        <!-- ARDUINO  -->
+        <param name="port" value="/dev/ttyUSB0"/>
+        <param name="baud" value="57600"/>
+  </node>
+
+  <include file="$(find turtlebot3_camera)/launch/cameraPi_USB_robot.launch" />
+</launch>
