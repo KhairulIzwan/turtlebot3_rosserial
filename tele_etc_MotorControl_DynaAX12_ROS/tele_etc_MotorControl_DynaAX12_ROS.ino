@@ -1,9 +1,8 @@
 //different specific libraries
 #include <ros.h>
 #include <ros/time.h>
-
+#include <std_msgs/Int32.h>
 #include <geometry_msgs/Twist.h>
-
 #include "Arduino.h"
 #include "AX12A.h"
 
@@ -25,8 +24,24 @@ double velDiff;
 double leftPower;
 double rightPower;
 
+double speed;
+
 double speed1;
 double speed2;
+
+// char dir1[];
+// char dir2[];
+
+// double motorPower;
+// double motorSpeed;
+
+// char dir1[];
+
+char latt[9];
+char lon[9];
+
+std_msgs::Int32 rand_msg;
+ros::Publisher pub("/number", &rand_msg);
 
 void messageCb(const geometry_msgs::Twist &msg)
 {
@@ -49,25 +64,41 @@ void motorDirection()
     speed2 = (abs(leftPower) - 0.00) * (1000 - 200) / (6.49 - 0.00) + 200;
     speed1 = (abs(rightPower) - 0.00) * (1000 - 200) / (6.49 - 0.00) + 200;
 
+    // Has possiblity to move
+    // if (abs(leftPower) == abs(rightPower))
+    // {
+    // FORWARD
     if ((leftPower > 0) && (rightPower > 0))
     {
       moveForward(speed1, speed2);
+      rand_msg.data = 1;
+      pub.publish(&rand_msg);
     }
+    // FORWARD
     else if ((leftPower > 0) && (rightPower < 0))
     {
       moveLeft(speed1, speed2);
+      rand_msg.data = 2;
+      pub.publish(&rand_msg);
     }
+    // BACKWARD
     else if ((leftPower < 0) && (rightPower < 0))
     {
       moveBackward(speed1, speed2);
+      rand_msg.data = 3;
+      pub.publish(&rand_msg);
     }
+    // BACKWARD
     else if ((leftPower < 0) && (rightPower > 0))
     {
       moveRight(speed1, speed2);
+      rand_msg.data = 4;
+      pub.publish(&rand_msg);
     }
   }
   else
   {
+    // STOP
     moveStop();
   }
 }
@@ -108,6 +139,9 @@ void moveStop()
 
 ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", &messageCb);
 
+//std_msgs::Int32 rand_msg;
+//ros::Publisher pub("/number", &rand_msg);
+
 void setup()
 {
   ax12a.begin(BaudRate, DirectionPin, &Serial1);  // Using HardwareSerial (Serial1 or Serial2 or Serial3) of ARDUINO MEGA 2560
@@ -116,6 +150,7 @@ void setup()
 
   nh.initNode();
   nh.subscribe(sub);
+  nh.advertise(pub);
 }
 
 void loop()
